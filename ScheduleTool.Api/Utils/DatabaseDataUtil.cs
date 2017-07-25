@@ -22,7 +22,7 @@ namespace ScheduleTool.Api.Utils
 
         private DatabaseDataUtil()
         {
-            var hostName = Environment.GetEnvironmentVariable("DATABASE");
+            var hostName = Environment.GetEnvironmentVariable("DATABASE") ?? DeafultDatabase;
             Console.WriteLine($"Connecting to database: {hostName}");
             var ips = Dns.GetHostAddressesAsync(hostName).Result.ToList();
             ips.ForEach(d => Console.WriteLine(d.ToString()));

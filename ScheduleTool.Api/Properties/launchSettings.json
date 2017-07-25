@@ -13,7 +13,6 @@
       "launchBrowser": true,
       "launchUrl": "api/values",
       "environmentVariables": {
-        "DATABASE": "localhost",
         "ASPNETCORE_ENVIRONMENT": "Development"
       },
       "applicationUrl": "http://localhost:57245"
