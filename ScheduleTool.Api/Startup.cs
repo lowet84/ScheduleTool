@@ -1,9 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
+using System.Reflection.Metadata;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.Features;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -35,6 +39,8 @@ namespace ScheduleTool.Api
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
+            app.UseMiddleware<ErrorHandlerMiddleware>();
+
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
 
@@ -45,6 +51,30 @@ namespace ScheduleTool.Api
             app.UseMvc();
             app.UseDefaultFiles();
             app.UseStaticFiles();
+        }
+    }
+
+    public class ErrorHandlerMiddleware
+    {
+        private readonly RequestDelegate next;
+
+        public ErrorHandlerMiddleware(RequestDelegate next)
+        {
+            this.next = next;
+        }
+
+        public async Task Invoke(HttpContext context)
+        {
+            try
+            {
+                await next.Invoke(context);
+            }
+            catch (HttpException httpException)
+            {
+                context.Response.StatusCode = httpException.StatusCode;
+                var responseFeature = context.Features.Get<IHttpResponseFeature>();
+                responseFeature.ReasonPhrase = httpException.Message;
+            }
         }
     }
 }

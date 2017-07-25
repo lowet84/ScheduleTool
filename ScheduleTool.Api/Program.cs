@@ -18,7 +18,7 @@ namespace ScheduleTool.Api
                 .UseIISIntegration()
                 .UseStartup<Startup>()
                 .UseApplicationInsights()
-                .UseUrls("http://*:6000")
+                .UseUrls("http://*:5010")
                 .Build();
 
             host.Run();
