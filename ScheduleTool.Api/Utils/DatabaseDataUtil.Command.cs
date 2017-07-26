@@ -15,8 +15,8 @@ namespace ScheduleTool.Api.Utils
     {
         public Dictionary<string, string> GetAllCommands()
         {
-            Cursor<RunCommand> audiobookCursor = GetTable(DbTable.Commands).Run<RunCommand>(_connection);
-            return audiobookCursor.ToDictionary(d => d.id, d => d.Name);
+            Cursor<RunCommand> cursor = GetTable(DbTable.Commands).Run<RunCommand>(_connection);
+            return cursor.ToDictionary(d => d.id, d => d.Name);
         }
 
         public RunCommand GetCommand(string id)

@@ -8,7 +8,9 @@
         // Tables
         private enum DbTable
         {
-            Commands
+            Commands,
+            ScheduleTasks,
+            Log
         }
     }
 }

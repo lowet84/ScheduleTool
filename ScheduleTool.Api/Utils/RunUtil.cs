@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics;
+using System.Linq;
 using ScheduleTool.Api.Model;
 
 namespace ScheduleTool.Api.Utils
@@ -20,6 +21,11 @@ namespace ScheduleTool.Api.Utils
             process.WaitForExit();
             var output = process.StandardOutput.ReadToEnd();
             return output;
+        }
+
+        public static void RunScheduleTask(ScheduleTask task)
+        {
+            var commands = task.Commands.Select(commandId => DatabaseDataUtil.Instance.GetCommand(commandId)).ToList();
         }
     }
 }
