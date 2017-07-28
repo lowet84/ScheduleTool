@@ -1,4 +1,7 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using ScheduleTool.Api.Model;
 
@@ -23,9 +26,27 @@ namespace ScheduleTool.Api.Utils
             return output;
         }
 
-        public static void RunScheduleTask(ScheduleTask task)
+        public static void RunScheduleTasks(IList<ScheduleTask> tasks)
+        {
+            RunScheduleTasks(tasks.ToArray());
+        }
+
+        public static void RunScheduleTasks(params ScheduleTask[] tasks)
+        {
+            foreach (var task in tasks)
+            {
+                RunScheduleTask(task);
+            }
+        }
+
+        private static void RunScheduleTask(ScheduleTask task)
         {
             var commands = task.Commands.Select(commandId => DatabaseDataUtil.Instance.GetCommand(commandId)).ToList();
+            foreach (var runCommand in commands)
+            {
+                var result = Run(runCommand);
+                DatabaseDataUtil.Instance.Log(new LogItem { Result = result, TaskId = task.id, Time = DateTime.Now });
+            }
         }
     }
 }

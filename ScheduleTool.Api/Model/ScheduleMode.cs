@@ -8,6 +8,7 @@ namespace ScheduleTool.Api.Model
     public enum ScheduleMode
     {
         Initialize,
+        Startup,
         Minutely,
         FiveMin,
         HalfHour,

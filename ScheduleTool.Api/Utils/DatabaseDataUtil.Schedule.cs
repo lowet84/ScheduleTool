@@ -58,5 +58,11 @@ namespace ScheduleTool.Api.Utils
             }
             table.Get(id).Delete().Run(_connection);
         }
+
+        public List<ScheduleTask> GetAllScheduleTasks()
+        {
+            Cursor<ScheduleTask> cursor = GetTable(DbTable.ScheduleTasks).Run<ScheduleTask>(_connection);
+            return cursor.ToList();
+        }
     }
 }

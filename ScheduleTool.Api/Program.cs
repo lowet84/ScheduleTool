@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using ScheduleTool.Api.Utils;
 
 namespace ScheduleTool.Api
 {
@@ -12,6 +13,7 @@ namespace ScheduleTool.Api
     {
         public static void Main(string[] args)
         {
+            ScheduleRunnerUtil.Start();
             var host = new WebHostBuilder()
                 .UseKestrel()
                 .UseContentRoot(Directory.GetCurrentDirectory())
