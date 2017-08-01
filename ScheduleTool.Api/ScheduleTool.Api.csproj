@@ -5,6 +5,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="initialized\**" />
+    <Content Remove="initialized\**" />
+    <EmbeddedResource Remove="initialized\**" />
+    <None Remove="initialized\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Folder Include="wwwroot\" />
   </ItemGroup>
   <ItemGroup>

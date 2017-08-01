@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection.Metadata;
+using System.Runtime.InteropServices.ComTypes;
+using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using ScheduleTool.Api.Model;
@@ -21,6 +23,54 @@ namespace ScheduleTool.Api.Utils
             }
 
             RunUtil.RunScheduleTasks(GetTasks(ScheduleMode.Startup));
+
+            var timer = new Timer(Callback, null, 0, 60000);
+        }
+
+        private static void Callback(object state)
+        {
+            foreach (var scheduleTask in GetTasks(
+                ScheduleMode.Daily,
+                ScheduleMode.SixHours,
+                ScheduleMode.Hourly,
+                ScheduleMode.HalfHour,
+                ScheduleMode.FiveMin,
+                ScheduleMode.Minutely))
+            {
+                switch (scheduleTask.ScheduleMode)
+                {
+                    case ScheduleMode.Minutely:
+                        RunTaskInBackground(scheduleTask);
+                        break;
+                    case ScheduleMode.FiveMin:
+                        if (DateTime.Now.Minute % 5 == 0)
+                            RunTaskInBackground(scheduleTask);
+                        break;
+                    case ScheduleMode.HalfHour:
+                        if (DateTime.Now.Minute % 30 == 0)
+                            RunTaskInBackground(scheduleTask);
+                        break;
+                    case ScheduleMode.Hourly:
+                        if (DateTime.Now.Minute == 0)
+                            RunTaskInBackground(scheduleTask);
+                        break;
+                    case ScheduleMode.SixHours:
+                        if (DateTime.Now.Minute == 0 && DateTime.Now.Hour % 6 == 0)
+                            RunTaskInBackground(scheduleTask);
+                        break;
+                    case ScheduleMode.Daily:
+                        if (DateTime.Now.Minute == 0 && DateTime.Now.Hour == 0)
+                            RunTaskInBackground(scheduleTask);
+                        break;
+                }
+            }
+        }
+
+        private static void RunTaskInBackground(ScheduleTask scheduleTask)
+        {
+            Console.WriteLine($"Running task {scheduleTask.Name}, {DateTime.Now}");
+            var task = new Task(()=>RunUtil.RunScheduleTasks(scheduleTask));
+            task.Start();
         }
 
         private static List<ScheduleTask> GetTasks(params ScheduleMode[] schedulemodes)

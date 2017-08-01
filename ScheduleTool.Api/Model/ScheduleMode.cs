@@ -13,8 +13,7 @@ namespace ScheduleTool.Api.Model
         FiveMin,
         HalfHour,
         Hourly,
-        FiveHours,
-        TwicePerDay,
+        SixHours,
         Daily
     }
 }
