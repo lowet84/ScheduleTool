@@ -1,27 +1,26 @@
 <template>
   <div>
-    <md-toolbar>
-      <h1 class="md-title">Commands</h1>
-    </md-toolbar>
-    <md-list>
-      <md-list-item v-for="command in commands" :key="command.id">
-        <md-button class="md-icon-button md-list-action" @click="run(command.id)">
-          <md-icon class="md-primary">play_arrow</md-icon>
-        </md-button>
-        <span>{{command.name}}</span>
-        <md-button class="md-icon-button md-list-action" @click="edit(command.id)">
-          <md-icon class="md-primary">edit</md-icon>
-        </md-button>
+    <side-menu :meta="{name: 'Commands'}"></side-menu>
+      <md-list>
+        <md-list-item v-for="command in commands" :key="command.id">
+          <md-button class="md-icon-button md-list-action" @click="run(command.id)">
+            <md-icon class="md-primary">play_arrow</md-icon>
+          </md-button>
+          <span>{{command.name}}</span>
+          <md-button class="md-icon-button md-list-action" @click="edit(command.id)">
+            <md-icon class="md-primary">edit</md-icon>
+          </md-button>
   
-      </md-list-item>
-    </md-list>
-    <md-button class="md-fab md-fab-bottom-right" @click="add">
-      <md-icon>add</md-icon>
-    </md-button>
+        </md-list-item>
+      </md-list>
+      <md-button class="md-fab md-fab-bottom-right" @click="add">
+        <md-icon>add</md-icon>
+      </md-button>
   </div>
 </template>
 
 <script>
+import SideMenu from '@/components/Menu'
 /* global __api__ */
 export default {
   data () {
@@ -31,6 +30,9 @@ export default {
   },
   created () {
     this.getCommands()
+  },
+  components: {
+    SideMenu
   },
   methods: {
     async getCommands () {
