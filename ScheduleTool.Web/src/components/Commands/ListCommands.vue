@@ -1,21 +1,21 @@
 <template>
   <div>
     <side-menu :meta="{name: 'Commands'}"></side-menu>
-      <md-list>
-        <md-list-item v-for="command in commands" :key="command.id">
-          <md-button class="md-icon-button md-list-action" @click="run(command.id)">
-            <md-icon class="md-primary">play_arrow</md-icon>
-          </md-button>
-          <span>{{command.name}}</span>
-          <md-button class="md-icon-button md-list-action" @click="edit(command.id)">
-            <md-icon class="md-primary">edit</md-icon>
-          </md-button>
+    <md-list>
+      <md-list-item v-for="command in commands" :key="command.id">
+        <md-button class="md-icon-button md-list-action" @click="run(command.id)">
+          <md-icon class="md-primary">play_arrow</md-icon>
+        </md-button>
+        <span>{{command.name}}</span>
+        <md-button class="md-icon-button md-list-action" @click="edit(command.id)">
+          <md-icon class="md-primary">edit</md-icon>
+        </md-button>
   
-        </md-list-item>
-      </md-list>
-      <md-button class="md-fab md-fab-bottom-right" @click="add">
-        <md-icon>add</md-icon>
-      </md-button>
+      </md-list-item>
+    </md-list>
+    <md-button class="md-fab md-fab-bottom-right" @click="add">
+      <md-icon>add</md-icon>
+    </md-button>
   </div>
 </template>
 
