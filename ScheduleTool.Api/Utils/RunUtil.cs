@@ -19,6 +19,8 @@ namespace ScheduleTool.Api.Utils
                 CreateNoWindow = true,
                 RedirectStandardOutput = true
             };
+            if (command.WorkDir != null)
+                startInfo.WorkingDirectory = command.WorkDir;
             process.StartInfo = startInfo;
             process.Start();
             process.WaitForExit();
