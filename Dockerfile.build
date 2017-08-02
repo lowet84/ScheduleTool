@@ -1,0 +1,6 @@
+FROM microsoft/aspnetcore-build
+WORKDIR /source
+COPY ScheduleTool.Api/*.csproj .
+RUN dotnet restore
+COPY ScheduleTool.Api/. .
+CMD dotnet publish --output /app/ --configuration Release
