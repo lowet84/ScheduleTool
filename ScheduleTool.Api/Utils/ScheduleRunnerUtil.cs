@@ -1,11 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection.Metadata;
-using System.Runtime.InteropServices.ComTypes;
 using System.Threading;
 using System.Threading.Tasks;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
 using ScheduleTool.Api.Model;
 
 namespace ScheduleTool.Api.Utils
@@ -14,6 +11,14 @@ namespace ScheduleTool.Api.Utils
     {
         public static void Start()
         {
+            Initialize();
+            RunUtil.RunScheduleTasks(GetTasks(ScheduleMode.Startup));
+
+            var timer = new Timer(Callback, null, 0, 60000);
+        }
+
+        private static void Initialize()
+        {
             var initTasks = GetTasks(ScheduleMode.Initialize);
             foreach (var task in initTasks)
             {
@@ -21,14 +26,11 @@ namespace ScheduleTool.Api.Utils
                 RunUtil.RunScheduleTasks(task);
                 InitializeUtil.SetInitialized(task.id);
             }
-
-            RunUtil.RunScheduleTasks(GetTasks(ScheduleMode.Startup));
-
-            var timer = new Timer(Callback, null, 0, 60000);
         }
 
         private static void Callback(object state)
         {
+            Initialize();
             foreach (var scheduleTask in GetTasks(
                 ScheduleMode.Daily,
                 ScheduleMode.SixHours,
